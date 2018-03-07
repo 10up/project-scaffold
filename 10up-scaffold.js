@@ -6,12 +6,24 @@ const replace = require( 'replace-in-file' );
 const directoryName = 'project-name';
 const repoToClone = 'https://github.com/timwright12/webpack-starter';
 
+if  (fs.existsSync( './' + directoryName ) ) {
+
+	console.log( '' );
+	console.log( '' );
+	console.log( 'WARNING: A ' + directoryName + ' directory already exists, please remove it or change the path' );
+	console.log( '' );
+	
+	// Bail out so you don't delete the directory or error out
+	return false;
+
+}
+
 clone( repoToClone, './' + directoryName,
 	function( err ) {
 		
 		if ( err ) {
 
-			console.log( err) ;
+			console.log( err ) ;
 
 		} else {
 
