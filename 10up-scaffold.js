@@ -35,7 +35,7 @@ const directoriesToRename = [
 
 if  (fs.existsSync( './' + directoryName ) ) {
 
-	console.log( chalk.yellow.bold('✘ Warning: ') + '"' + directoryName + '" directory already exists, please remove it or change the path' );
+	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
 	
 	// Bail out so you don't delete the directory or error out
 	return false;
@@ -117,7 +117,7 @@ function deleteFile( dir, file, cb ) {
 			if ( err ) {
 				return reject( err );
 			}
-			if ( stats.isDirectory()) {
+			if ( stats.isDirectory() ) {
 				resolve( deleteDirectory( filePath ) );
 			} else {
 				fs.unlink( filePath, function ( err ) {
@@ -150,14 +150,14 @@ function deleteDirectory( dir, cb ) {
 			}
 			fs.readdir( dir, function ( err, files ) {
 				if ( err ) {
-					return reject(err);
+					return reject( err );
 				}
 				Promise.all( files.map( function ( file ) {
 					return deleteFile( dir, file );
 				} ) ).then( function () {
 					fs.rmdir( dir, function ( err ) {
 						if ( err ) {
-							return reject( err) ;
+							return reject( err ) ;
 						}
 						resolve();
 					});
