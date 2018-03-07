@@ -5,7 +5,11 @@ const replace = require( 'replace-in-file' );
 
 const directoryName = 'project-name';
 const repoToClone = 'https://github.com/timwright12/webpack-starter';
+
+// An array of files to remove
 const filesToRemove = ['README.md'];
+
+// An array of directories to remove
 const directoriesToRemove = ['.git'];
 
 // Objects of text strings to find and replace
@@ -24,10 +28,12 @@ const directoriesToRename = [
 	},
 ];
 
-// Make sure the directory isn't already there before running the script
+/*
+	Make sure the directory isn't already there before running the script
+*/
+
 if  (fs.existsSync( './' + directoryName ) ) {
 
-	console.log( '' );
 	console.log( '' );
 	console.log( 'WARNING: A ' + directoryName + ' directory already exists, please remove it or change the path' );
 	console.log( '' );
@@ -36,6 +42,10 @@ if  (fs.existsSync( './' + directoryName ) ) {
 	return false;
 
 }
+
+/*
+	Clone the repo and get to work
+*/
 
 clone( repoToClone, './' + directoryName,
 	function( err ) {
@@ -93,13 +103,14 @@ clone( repoToClone, './' + directoryName,
 		}
 
 	}
-);
+); // clone()
 
 /*
 	Delete files
 */
 
 function deleteFile( dir, file, cb ) {
+
 	return new Promise( function ( resolve, reject ) {
 		var filePath = path.join( dir, file );
 		fs.lstat( filePath, function ( err, stats ) {
@@ -123,13 +134,15 @@ function deleteFile( dir, file, cb ) {
 		}
 		
 	} );
-};
+
+} // deleteFile()
 
 /*
 	Delete directories
 */
 
 function deleteDirectory( dir, cb ) {
+
 	return new Promise( function ( resolve, reject ) {
 		fs.access( dir, function ( err ) {
 			if ( err ) {
@@ -157,4 +170,5 @@ function deleteDirectory( dir, cb ) {
 		}
 		
 	} );
-};
+
+}; // deleteDirectory()
