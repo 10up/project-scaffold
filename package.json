@@ -9,6 +9,7 @@
   "author": "10up LLC",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.3.2",
     "fs": "0.0.1-security",
     "git-clone": "^0.1.0",
     "path": "^0.12.7",

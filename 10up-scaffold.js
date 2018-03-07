@@ -2,6 +2,7 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const clone = require( 'git-clone' );
 const replace = require( 'replace-in-file' );
+const chalk = require( 'chalk' );
 
 const directoryName = 'project-name';
 const repoToClone = 'https://github.com/timwright12/webpack-starter';
@@ -34,9 +35,7 @@ const directoriesToRename = [
 
 if  (fs.existsSync( './' + directoryName ) ) {
 
-	console.log( '' );
-	console.log( 'WARNING: A ' + directoryName + ' directory already exists, please remove it or change the path' );
-	console.log( '' );
+	console.log( chalk.red.bold('✘ Warning: ') + '"' + directoryName + '" directory already exists, please remove it or change the path' );
 	
 	// Bail out so you don't delete the directory or error out
 	return false;
@@ -56,22 +55,26 @@ clone( repoToClone, './' + directoryName,
 
 		} else {
 
-			console.log( '' );
-			console.log( 'Clone Successful' );
-			console.log( '' );
+			console.log( chalk.green( '✔ Clone Successful' ) );
 
 			
 			// Delete unnecessary files
-			deleteFile( directoryName, 'README.md', function() {
-				console.log( 'README.md deleted' );
-				console.log( '' );
-			} );
+			if ( filesToRemove.length ) {
+				filesToRemove.forEach( function( file ) {
+					deleteFile( directoryName, file, function() {
+						console.log( chalk.green( `✔ ${file} deleted` ) );
+					} );
+				} );
+			}
 			
 			// Delete unnecessary directories
-			deleteDirectory( directoryName + '/.git', function() {
-				console.log( '.git deleted' );
-				console.log( '' );
-			} );
+			if ( directoriesToRemove.length ) {
+				directoriesToRemove.forEach( function( dir ) {
+					deleteDirectory( directoryName + '/' + dir, function() {
+						console.log( chalk.green( `✔ ${dir} deleted` ) );
+					} );
+				} );
+			}
 			
 			// Find and replace text
 			textToReplace.forEach( function( text ) {
@@ -82,12 +85,10 @@ clone( repoToClone, './' + directoryName,
 					to: text.to,
 				} )
 				.then( changes => {
-					console.log( 'Modified files:', changes.join( ', ' ) );
-					console.log( '' );
+					console.log( chalk.green( '✔ Modified files:', changes.join( ', ' ) ) );
 				} )
 				.catch( error => {
-					console.error( 'Error occurred:', error );
-					console.log( '' );
+					console.error( chalk.red( '✘ Error occurred:', error ) );
 				} );
 
 			} );
@@ -96,8 +97,7 @@ clone( repoToClone, './' + directoryName,
 			directoriesToRename.forEach( function( dir ) {
 				fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
 					if ( err ) throw err;
-					console.log('Renamed ' + dir.from );
-					console.log( '' );
+					console.log( chalk.green( '✔ Renamed ' + dir.from ) );
 				} );
 			} );
 		}
