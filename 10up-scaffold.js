@@ -33,7 +33,7 @@ const directoriesToRename = [
 	Make sure the directory isn't already there before running the script
 */
 
-if  (fs.existsSync( './' + directoryName ) ) {
+if  ( fs.existsSync( './' + directoryName ) ) {
 
 	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
 	
