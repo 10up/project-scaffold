@@ -5,7 +5,26 @@ const replace = require( 'replace-in-file' );
 
 const directoryName = 'project-name';
 const repoToClone = 'https://github.com/timwright12/webpack-starter';
+const filesToRemove = ['README.md'];
+const directoriesToRemove = ['.git'];
 
+// Objects of text strings to find and replace
+const textToReplace = [
+	{
+		from: 'Hi.',
+		to: 'Hello!'
+	},
+];
+
+// Objects of directories that need to be renamed
+const directoriesToRename = [
+	{
+		from: 'assets',
+		to: 'new-assets'
+	},
+];
+
+// Make sure the directory isn't already there before running the script
 if  (fs.existsSync( './' + directoryName ) ) {
 
 	console.log( '' );
@@ -45,25 +64,31 @@ clone( repoToClone, './' + directoryName,
 			} );
 			
 			// Find and replace text
-			replace( {
-				files: directoryName + '/*.*',
-				from: 'Hi.',
-				to: 'Hello!',
-			} )
-			.then( changes => {
-				console.log( 'Modified files:', changes.join( ', ' ) );
-				console.log( '' );
-			} )
-			.catch( error => {
-				console.error( 'Error occurred:', error );
-				console.log( '' );
+			textToReplace.forEach( function( text ) {
+
+				replace( {
+					files: directoryName + '/*.*',
+					from: text.from,
+					to: text.to,
+				} )
+				.then( changes => {
+					console.log( 'Modified files:', changes.join( ', ' ) );
+					console.log( '' );
+				} )
+				.catch( error => {
+					console.error( 'Error occurred:', error );
+					console.log( '' );
+				} );
+
 			} );
-			
+
 			// Rename directories
-			fs.rename( directoryName + '/assets', directoryName + '/new-assets', function ( err ) {
-				if ( err ) throw err;
-				console.log('Renamed assets');
-				console.log( '' );
+			directoriesToRename.forEach( function( dir ) {
+				fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
+					if ( err ) throw err;
+					console.log('Renamed ' + dir.from );
+					console.log( '' );
+				} );
 			} );
 		}
 
