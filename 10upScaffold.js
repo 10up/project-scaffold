@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require( 'fs' );
 const path = require( 'path' );
 const clone = require( 'git-clone' );
@@ -39,6 +41,10 @@ if  ( fs.existsSync( './' + directoryName ) ) {
 	
 	// Bail out so you don't delete the directory or error out
 	return false;
+
+} else {
+
+	console.log( 'Setting up your project. This might take a bit.' );
 
 }
 

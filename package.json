@@ -4,10 +4,17 @@
   "description": "CLI Command for scaffolding 10up projects",
   "main": "index.js",
   "scripts": {
-    "create-10up": "node 10up-scaffold.js"
+    "create-10up": "node 10upScaffold.js"
   },
   "author": "10up LLC",
   "license": "MIT",
+  "files": [
+    "index.js",
+    "10upScaffold.js"
+  ],
+  "bin": {
+    "create-10up": "./index.js"
+  },
   "dependencies": {
     "chalk": "^2.3.2",
     "fs": "0.0.1-security",
