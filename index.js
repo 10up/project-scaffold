@@ -1,6 +1,8 @@
+#!/usr/bin/env node
+
 'use strict';
 
-var chalk = require('chalk');
+var chalk = require( 'chalk' );
 
 var currentNodeVersion = process.versions.node;
 var semver = currentNodeVersion.split( '.' );
