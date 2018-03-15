@@ -47,8 +47,14 @@ const program = new commander.Command( packageJson.name )
   	.allowUnknownOption()
 	.parse( process.argv );
 
-if ( directoryName === undefined ) {
-	directoryName = 'project-name';
+if ( typeof directoryName === 'undefined' ) {
+	console.error( 'Please specify the project directory:' );
+	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}` );
+	console.log();
+	console.log( 'For example:' );
+	console.log(`  ${chalk.cyan( program.name() )} ${chalk.green( 'my-10up-project' )}`);
+	console.log();
+	process.exit( 1 );
 }
 
 /*
