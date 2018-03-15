@@ -15,7 +15,7 @@
   "bin": {
     "create-10up": "./index.js"
   },
-  "preferGlobal": "true",
+  "preferGlobal": true,
   "dependencies": {
     "chalk": "^2.3.2",
     "fs": "0.0.1-security",
