@@ -5,9 +5,11 @@ const path = require( 'path' );
 const clone = require( 'git-clone' );
 const replace = require( 'replace-in-file' );
 const chalk = require( 'chalk' );
+const commander = require( 'commander' );
+const packageJson = require( './package.json' );
 
-const directoryName = 'project-name';
 const repoToClone = 'https://github.com/timwright12/webpack-starter';
+let directoryName;
 
 // An array of files to remove
 const filesToRemove = ['README.md'];
@@ -32,10 +34,28 @@ const directoriesToRename = [
 ];
 
 /*
+	Set up the CLI
+*/
+
+const program = new commander.Command( packageJson.name )
+	.version( packageJson.version )
+	.arguments( '<project-directory>' )
+	.usage( `${chalk.green( '<project-directory>' )} [options]` )
+	.action( name => {
+		directoryName = name
+	} )
+  	.allowUnknownOption()
+	.parse( process.argv );
+
+if ( directoryName === undefined ) {
+	directoryName = 'project-name';
+}
+
+/*
 	Make sure the directory isn't already there before running the script
 */
 
-if  ( fs.existsSync( './' + directoryName ) ) {
+if ( fs.existsSync( './' + directoryName ) ) {
 
 	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
 	
