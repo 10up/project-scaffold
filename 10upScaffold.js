@@ -52,7 +52,7 @@ if ( typeof directoryName === 'undefined' ) {
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}` );
 	console.log();
 	console.log( 'For example:' );
-	console.log(`  ${chalk.cyan( program.name() )} ${chalk.green( 'my-10up-project' )}`);
+	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'my-10up-project' ) }` );
 	console.log();
 	process.exit( 1 );
 }
