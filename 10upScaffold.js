@@ -27,8 +27,8 @@ const program = new commander.Command( packageJson.name )
 	.arguments( '<project-type> <project-directory>' )
 	.usage( `${chalk.green( '<project-type> <project-directory>' )} [options]` )
 	.action( (type, name) => {
-		projectType   = type.toLowerCase()
-		directoryName = name
+		projectType   = type.toLowerCase();
+		directoryName = name.toLowerCase();
 	} )
   	.allowUnknownOption()
 	.parse( process.argv );
@@ -54,7 +54,6 @@ if ( typeof directoryName === 'undefined' ) {
 	process.exit( 1 );
 }
 
-directoryName = directoryName.toLowerCase();
 const nameSpaces = directoryName.replace( /-/g, ' ' );
 const nameCapitalize = nameSpaces.replace( /\b\w/g, l => l.toUpperCase() );
 const nameCamelCase = nameCapitalize.replace( ' ', '' );
