@@ -1,3 +1,4 @@
+// @ts-check
 'use strict';
 
 const chalk = require( 'chalk' );
@@ -9,11 +10,13 @@ const path = require( 'path' );
 const replace = require( 'replace-in-file' );
 
 // @TODO: Update this with the final path
-const repoToClone = 'https://github.com/timwright12/test-scaffold';
+const reposToClone = {
+	theme: 'https://github.com/timwright12/test-scaffold',
+	plugin: 'https://github.com/daveross/plugin-scaffold'
+}
 
 // @TODO: Update this with the final path
-const repoToClonePlugin = '';
-let directoryName;
+let directoryName = '', projectType = 'theme';
 
 /*
 	Set up the CLI
@@ -21,13 +24,25 @@ let directoryName;
 
 const program = new commander.Command( packageJson.name )
 	.version( packageJson.version )
-	.arguments( '<project-directory>' )
-	.usage( `${chalk.green( '<project-directory>' )} [options]` )
-	.action( name => {
-		directoryName = name
+	.arguments( '<project-type> <project-directory>' )
+	.usage( `${chalk.green( '<project-type> <project-directory>' )} [options]` )
+	.action( (type, name) => {
+		projectType   = type.toLowerCase();
+		directoryName = name.toLowerCase();
 	} )
   	.allowUnknownOption()
 	.parse( process.argv );
+
+if ( typeof projectType === 'undefined' || undefined === reposToClone[projectType]) {
+	console.error( 'Please specify the what type of project to create:' );
+	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-type> <project-directory>')}` );
+	console.log( " Valid project types are 'theme' and 'plugin'." );
+	console.log();
+	console.log( 'For example:' );
+	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'theme my-10up-project' ) }` );
+	console.log();
+	process.exit( 1 );	
+}
 
 if ( typeof directoryName === 'undefined' ) {
 	console.error( 'Please specify the project directory:' );
@@ -39,7 +54,6 @@ if ( typeof directoryName === 'undefined' ) {
 	process.exit( 1 );
 }
 
-directoryName = directoryName.toLowerCase();
 const nameSpaces = directoryName.replace( /-/g, ' ' );
 const nameCapitalize = nameSpaces.replace( /\b\w/g, l => l.toUpperCase() );
 const nameCamelCase = nameCapitalize.replace( ' ', '' );
@@ -76,6 +90,10 @@ const textToReplace = [
 	{
 		from: /10up Theme Scaffold/g,
 		to: nameCapitalize
+	},
+	{
+		from: /TENUP_COPYRIGHT_YEAR/g,
+		to: new Date().getFullYear()
 	}
 ];
 
@@ -100,7 +118,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
 	
 	// Bail out so you don't delete the directory or error out
-	return false;
+	process.exit( 1 );
 
 } else {
 
@@ -112,7 +130,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	Clone the repo and get to work
 */
 
-clone( repoToClone, './' + directoryName,
+clone( reposToClone[projectType], './' + directoryName,
 	function( err ) {
 		
 		if ( err ) {
