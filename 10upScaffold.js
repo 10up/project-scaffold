@@ -8,7 +8,11 @@ const chalk = require( 'chalk' );
 const commander = require( 'commander' );
 const packageJson = require( './package.json' );
 
+// @TODO: Update this with the final path
 const repoToClone = 'https://github.com/timwright12/test-scaffold';
+
+// @TODO: Update this with the final path
+const repoToClonePlugin = '';
 let directoryName;
 
 /*
