@@ -10,11 +10,13 @@ const commander = require( 'commander' );
 const packageJson = require( './package.json' );
 
 // @TODO: Update this with the final path
-const repoToClone = 'https://github.com/timwright12/test-scaffold';
+const reposToClone = {
+	theme: 'https://github.com/timwright12/test-scaffold',
+	plugin: 'https://github.com/daveross/plugin-scaffold'
+}
 
 // @TODO: Update this with the final path
-const repoToClonePlugin = '';
-let directoryName;
+let directoryName = '', projectType = 'theme';
 
 /*
 	Set up the CLI
@@ -125,7 +127,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	Clone the repo and get to work
 */
 
-clone( repoToClone, './' + directoryName,
+clone( reposToClone[projectType], './' + directoryName,
 	function( err ) {
 		
 		if ( err ) {
