@@ -1,17 +1,17 @@
 // @ts-check
 'use strict';
 
-const fs = require( 'fs-extra' );
-const path = require( 'path' );
-const clone = require( 'git-clone' );
-const replace = require( 'replace-in-file' );
 const chalk = require( 'chalk' );
+const clone = require( 'git-clone' );
 const commander = require( 'commander' );
+const fs = require( 'fs-extra' );
 const packageJson = require( './package.json' );
+const path = require( 'path' );
+const replace = require( 'replace-in-file' );
 
 // @TODO: Update this with the final path
 const reposToClone = {
-	theme: 'https://github.com/timwright12/test-scaffold',
+	theme: 'https://github.com/timwright12/theme-scaffold',
 	plugin: 'https://github.com/daveross/plugin-scaffold'
 }
 
@@ -90,13 +90,17 @@ const textToReplace = [
 	{
 		from: /10up Scaffold/g,
 		to: nameCapitalize
+	},
+	{
+		from: /TENUP_COPYRIGHT_YEAR/g,
+		to: new Date().getFullYear()
 	}
 ];
 
 // Objects of directories that need to be renamed
 const directoriesToRename = [
 	{
-		from: 'tenup-theme-scaffold',
+		from: 'tenup-scaffold',
 		to: directoryName
 	},
 	{
