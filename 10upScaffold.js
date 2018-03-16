@@ -64,7 +64,7 @@ const nameUnderscoresUppercase = nameUnderscores.toUpperCase();
 const filesToRemove = ['README.md'];
 
 // An array of files to remove
-const filesToRename = ['TenUpThemeScaffold.pot'];
+const filesToRename = ['TenUpScaffold.pot'];
 
 // An array of directories to remove
 const directoriesToRemove = ['.git'];
@@ -72,23 +72,23 @@ const directoriesToRemove = ['.git'];
 // Objects of text strings to find and replace
 const textToReplace = [
 	{
-		from: /TenUpThemeScaffold/g,
+		from: /TenUpScaffold/g,
 		to: nameCamelCase
 	},
 	{
-		from: /TENUP_THEME_SCAFFOLD/g,
+		from: /TENUP_SCAFFOLD/g,
 		to: nameUnderscoresUppercase
 	},
 	{
-		from: /tenup-theme-scaffold/g,
+		from: /tenup-scaffold/g,
 		to: directoryName
 	},
 	{
-		from: /tenup_theme_scaffold/g,
+		from: /tenup_scaffold/g,
 		to: nameUnderscores
 	},
 	{
-		from: /10up Theme Scaffold/g,
+		from: /10up Scaffold/g,
 		to: nameCapitalize
 	}
 ];
@@ -100,7 +100,11 @@ const directoriesToRename = [
 		to: directoryName
 	},
 	{
-		from: 'languages/TenUpThemeScaffold.pot',
+		from: 'tenup-plugin-scaffold',
+		to: directoryName
+	},
+	{
+		from: 'languages/TenUpScaffold.pot',
 		to: 'languages/' + nameCamelCase + '.pot'
 	}
 ];
