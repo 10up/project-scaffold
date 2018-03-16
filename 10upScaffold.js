@@ -104,7 +104,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 
 } else {
 
-	console.log( chalk.magenta( `Setting up your project. This might take a bit.` ) );
+	console.log( chalk.yellow( `Setting up your project. This might take a bit.` ) );
 
 }
 
@@ -158,8 +158,8 @@ clone( repoToClone, './' + directoryName,
 					console.log(chalk.green.bold( `✔ Modified files: '` ), changes.join(', ') );
 				}
 
-				catch (error) {
-					console.error('Error occurred:', error);
+				catch ( error ) {
+					console.error( 'Error occurred:', error );
 				}
 
 			} );
