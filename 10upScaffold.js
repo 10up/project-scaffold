@@ -104,6 +104,10 @@ const directoriesToRename = [
 		to: directoryName
 	},
 	{
+		from: 'tenup-plugin-scaffold',
+		to: directoryName
+	},
+	{
 		from: 'languages/TenUpScaffold.pot',
 		to: 'languages/' + nameCamelCase + '.pot'
 	}
