@@ -112,7 +112,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
 	
 	// Bail out so you don't delete the directory or error out
-	return false;
+	process.exit( 1 );
 
 } else {
 
