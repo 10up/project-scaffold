@@ -11,7 +11,7 @@ const replace = require( 'replace-in-file' );
 
 // @TODO: Update this with the final path
 const reposToClone = {
-	theme: 'https://github.com/timwright12/test-scaffold',
+	theme: 'https://github.com/timwright12/theme-scaffold',
 	plugin: 'https://github.com/daveross/plugin-scaffold'
 }
 
