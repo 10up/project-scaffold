@@ -21,13 +21,25 @@ let directoryName;
 
 const program = new commander.Command( packageJson.name )
 	.version( packageJson.version )
-	.arguments( '<project-directory>' )
-	.usage( `${chalk.green( '<project-directory>' )} [options]` )
-	.action( name => {
+	.arguments( '<project-type> <project-directory>' )
+	.usage( `${chalk.green( '<project-type> <project-directory>' )} [options]` )
+	.action( (type, name) => {
+		projectType   = type.toLowerCase()
 		directoryName = name
 	} )
   	.allowUnknownOption()
 	.parse( process.argv );
+
+if ( typeof projectType === 'undefined' || undefined === reposToClone[projectType]) {
+	console.error( 'Please specify the what type of project to create:' );
+	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-type> <project-directory>')}` );
+	console.log( " Valid project types are 'theme' and 'plugin'." );
+	console.log();
+	console.log( 'For example:' );
+	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'theme my-10up-project' ) }` );
+	console.log();
+	process.exit( 1 );	
+}
 
 if ( typeof directoryName === 'undefined' ) {
 	console.error( 'Please specify the project directory:' );
