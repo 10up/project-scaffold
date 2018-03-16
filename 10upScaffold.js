@@ -1,12 +1,12 @@
 'use strict';
 
-const fs = require( 'fs-extra' );
-const path = require( 'path' );
-const clone = require( 'git-clone' );
-const replace = require( 'replace-in-file' );
 const chalk = require( 'chalk' );
+const clone = require( 'git-clone' );
 const commander = require( 'commander' );
+const fs = require( 'fs-extra' );
 const packageJson = require( './package.json' );
+const path = require( 'path' );
+const replace = require( 'replace-in-file' );
 
 // @TODO: Update this with the final path
 const repoToClone = 'https://github.com/timwright12/test-scaffold';
