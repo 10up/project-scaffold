@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require( 'fs' );
+const fs = require( 'fs-extra' );
 const path = require( 'path' );
 const clone = require( 'git-clone' );
 const replace = require( 'replace-in-file' );
@@ -8,30 +8,8 @@ const chalk = require( 'chalk' );
 const commander = require( 'commander' );
 const packageJson = require( './package.json' );
 
-const repoToClone = 'https://github.com/timwright12/webpack-starter';
+const repoToClone = 'https://github.com/timwright12/test-scaffold';
 let directoryName;
-
-// An array of files to remove
-const filesToRemove = ['README.md'];
-
-// An array of directories to remove
-const directoriesToRemove = ['.git'];
-
-// Objects of text strings to find and replace
-const textToReplace = [
-	{
-		from: 'Hi.',
-		to: 'Hello!'
-	},
-];
-
-// Objects of directories that need to be renamed
-const directoriesToRename = [
-	{
-		from: 'assets',
-		to: 'new-assets'
-	},
-];
 
 /*
 	Set up the CLI
@@ -57,6 +35,58 @@ if ( typeof directoryName === 'undefined' ) {
 	process.exit( 1 );
 }
 
+directoryName = directoryName.toLowerCase();
+const nameSpaces = directoryName.replace( /-/g, ' ' );
+const nameCapitalize = nameSpaces.replace( /\b\w/g, l => l.toUpperCase() );
+const nameCamelCase = nameCapitalize.replace( ' ', '' );
+const nameUnderscores = directoryName.replace( /-/g, '_' );
+const nameUnderscoresUppercase = nameUnderscores.toUpperCase();
+
+// An array of files to remove
+const filesToRemove = ['README.md'];
+
+// An array of files to remove
+const filesToRename = ['TenUpThemeScaffold.pot'];
+
+// An array of directories to remove
+const directoriesToRemove = ['.git'];
+
+// Objects of text strings to find and replace
+const textToReplace = [
+	{
+		from: /TenUpThemeScaffold/g,
+		to: nameCamelCase
+	},
+	{
+		from: /TENUP_THEME_SCAFFOLD/g,
+		to: nameUnderscoresUppercase
+	},
+	{
+		from: /tenup-theme-scaffold/g,
+		to: directoryName
+	},
+	{
+		from: /tenup_theme_scaffold/g,
+		to: nameUnderscores
+	},
+	{
+		from: /10up Theme Scaffold/g,
+		to: nameCapitalize
+	}
+];
+
+// Objects of directories that need to be renamed
+const directoriesToRename = [
+	{
+		from: 'tenup-theme-scaffold',
+		to: directoryName
+	},
+	{
+		from: 'languages/TenUpThemeScaffold.pot',
+		to: 'languages/' + nameCamelCase + '.pot'
+	}
+];
+
 /*
 	Make sure the directory isn't already there before running the script
 */
@@ -70,7 +100,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 
 } else {
 
-	console.log( 'Setting up your project. This might take a bit.' );
+	console.log( chalk.magenta( `Setting up your project. This might take a bit.` ) );
 
 }
 
@@ -102,35 +132,42 @@ clone( repoToClone, './' + directoryName,
 			// Delete unnecessary directories
 			if ( directoriesToRemove.length ) {
 				directoriesToRemove.forEach( function( dir ) {
-					deleteDirectory( directoryName + '/' + dir, function() {
-						console.log( chalk.green( `✔ ${dir} deleted` ) );
-					} );
+					if ( fs.existsSync( directoryName + '/' + dir ) ) {
+						deleteDirectory( directoryName + '/' + dir, function() {
+							console.log( chalk.green( `✔ ${dir} deleted` ) );
+						} );
+					}
 				} );
 			}
 			
-			// Find and replace text
+			// Synchronously find and replace text within files
 			textToReplace.forEach( function( text ) {
 
-				replace( {
-					files: directoryName + '/*.*',
-					from: text.from,
-					to: text.to,
-				} )
-				.then( changes => {
-					console.log( chalk.green( '✔ Modified files:', changes.join( ', ' ) ) );
-				} )
-				.catch( error => {
-					console.error( chalk.red( '✘ Error occurred:', error ) );
-				} );
+				try {
+					const changes = replace.sync( {
+						files: directoryName + '/**/*.*',
+						from: text.from,
+						to: text.to,
+						encoding: 'utf8',
+					} );
+
+					console.log(chalk.green.bold( `✔ Modified files: '` ), changes.join(', ') );
+				}
+
+				catch (error) {
+					console.error('Error occurred:', error);
+				}
 
 			} );
 
 			// Rename directories
 			directoriesToRename.forEach( function( dir ) {
-				fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
-					if ( err ) throw err;
-					console.log( chalk.green( '✔ Renamed ' + dir.from ) );
-				} );
+				if ( fs.existsSync( directoryName + '/' + dir.from ) ) {
+					fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
+						if ( err ) throw err;
+						console.log( chalk.green( '✔ Renamed ' + dir.from ) );
+					} );
+				}
 			} );
 		}
 
