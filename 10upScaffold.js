@@ -90,10 +90,6 @@ const textToReplace = [
 	{
 		from: /10up Scaffold/g,
 		to: nameCapitalize
-	},
-	{
-		from: /TENUP_COPYRIGHT_YEAR/g,
-		to: new Date().getFullYear()
 	}
 ];
 
