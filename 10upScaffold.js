@@ -10,12 +10,6 @@ const path = require( 'path' );
 const replace = require( 'replace-in-file' );
 
 // @TODO: Update this with the final path
-const reposToClone = {
-	theme: 'https://github.com/timwright12/theme-scaffold',
-	plugin: 'https://github.com/daveross/plugin-scaffold'
-}
-
-// @TODO: Update this with the final path
 let directoryName = '',
 	projectType = 'theme';
 
@@ -34,7 +28,7 @@ const program = new commander.Command( packageJson.name )
   	.allowUnknownOption()
 	.parse( process.argv );
 
-if ( 'undefined' === typeof projectType || undefined === reposToClone[projectType]) {
+if ( 'undefined' === typeof projectType || undefined === packageJson.tenup.repos[projectType]) {
 	console.error( 'Please specify the what type of project to create:' );
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-type> <project-directory>')}` );
 	console.log( " Valid project types are 'theme' and 'plugin'." );
@@ -128,7 +122,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	Clone the repo and get to work
 */
 
-clone( reposToClone[projectType], './' + directoryName,
+clone( packageJson.tenup.repos[projectType], './' + directoryName,
 	function( err ) {
 
 		if ( err ) {
