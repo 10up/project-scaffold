@@ -16,7 +16,8 @@ const reposToClone = {
 }
 
 // @TODO: Update this with the final path
-let directoryName = '', projectType = 'theme';
+let directoryName = '',
+	projectType = 'theme';
 
 /*
 	Set up the CLI
@@ -33,7 +34,7 @@ const program = new commander.Command( packageJson.name )
   	.allowUnknownOption()
 	.parse( process.argv );
 
-if ( typeof projectType === 'undefined' || undefined === reposToClone[projectType]) {
+if ( 'undefined' === typeof projectType || undefined === reposToClone[projectType]) {
 	console.error( 'Please specify the what type of project to create:' );
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-type> <project-directory>')}` );
 	console.log( " Valid project types are 'theme' and 'plugin'." );
@@ -44,7 +45,7 @@ if ( typeof projectType === 'undefined' || undefined === reposToClone[projectTyp
 	process.exit( 1 );	
 }
 
-if ( typeof directoryName === 'undefined' ) {
+if ( 'undefined' === typeof directoryName ) {
 	console.error( 'Please specify the project directory:' );
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}` );
 	console.log();
@@ -62,9 +63,6 @@ const nameUnderscoresUppercase = nameUnderscores.toUpperCase();
 
 // An array of files to remove
 const filesToRemove = ['README.md'];
-
-// An array of files to remove
-const filesToRename = ['TenUpScaffold.pot'];
 
 // An array of directories to remove
 const directoriesToRemove = ['.git'];
@@ -132,7 +130,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 
 clone( reposToClone[projectType], './' + directoryName,
 	function( err ) {
-		
+
 		if ( err ) {
 
 			console.log( err ) ;
@@ -141,13 +139,16 @@ clone( reposToClone[projectType], './' + directoryName,
 
 			console.log( chalk.green( '✔ Clone Successful' ) );
 
-			
 			// Delete unnecessary files
 			if ( filesToRemove.length ) {
 				filesToRemove.forEach( function( file ) {
-					deleteFile( directoryName, file, function() {
-						console.log( chalk.green( `✔ ${file} deleted` ) );
-					} );
+					
+					// Check to see if the file exists before trying to delete it
+					if ( fs.existsSync( directoryName + '/' + file ) ) {
+						deleteFile( directoryName, file, function() {
+							console.log( chalk.green( `✔ ${file} deleted` ) );
+						} );
+					}
 				} );
 			}
 			
@@ -161,7 +162,7 @@ clone( reposToClone[projectType], './' + directoryName,
 					}
 				} );
 			}
-			
+
 			// Synchronously find and replace text within files
 			textToReplace.forEach( function( text ) {
 
@@ -173,7 +174,7 @@ clone( reposToClone[projectType], './' + directoryName,
 						encoding: 'utf8',
 					} );
 
-					console.log(chalk.green.bold( `✔ Modified files: '` ), changes.join(', ') );
+					console.log(chalk.green.bold( `✔ Modified files: ` ), changes.join(', ') );
 				}
 
 				catch ( error ) {
@@ -219,11 +220,11 @@ function deleteFile( dir, file, cb ) {
 				} );
 			}
 		} );
-		
-		if ( typeof cb === 'function' ) {
+
+		if ( 'function' === typeof cb ) {
 			cb.call( this );
 		}
-		
+
 	} );
 
 } // deleteFile()
@@ -251,12 +252,12 @@ function deleteDirectory( dir, cb ) {
 							return reject( err ) ;
 						}
 						resolve();
-					});
+					} );
 				} ).catch( reject );
 			} );
 		} );
 		
-		if ( typeof cb === 'function' ) {
+		if ( 'function' === typeof cb ) {
 			cb.call( this );
 		}
 		
