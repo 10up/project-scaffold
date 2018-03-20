@@ -202,6 +202,7 @@ clone( reposToClone[projectType], './' + directoryName,
  * @param {string} dir Directory path
  * @param {string} [file] Filename to delete (optional, deletes directory if undefined)
  * @param {Function} [cb] Callback 
+ * @returns {Promise}
  */
 function deleteFile( dir, file, cb ) {
 
@@ -235,7 +236,7 @@ function deleteFile( dir, file, cb ) {
  * Delete directories
  * @param {string} dir Directory
  * @param {Function} [cb] Callback
- * @returns {Promise}a
+ * @returns {Promise}
  */
 function deleteDirectory( dir, cb ) {
 
