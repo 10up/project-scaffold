@@ -197,10 +197,12 @@ clone( reposToClone[projectType], './' + directoryName,
 	}
 ); // clone()
 
-/*
-	Delete files
-*/
-
+/**
+ * Delete files
+ * @param {string} dir Directory path
+ * @param {string} [file] Filename to delete (optional, deletes directory if undefined)
+ * @param {Function} [cb] Callback 
+ */
 function deleteFile( dir, file, cb ) {
 
 	return new Promise( function ( resolve, reject ) {
@@ -229,10 +231,12 @@ function deleteFile( dir, file, cb ) {
 
 } // deleteFile()
 
-/*
-	Delete directories
-*/
-
+/**
+ * Delete directories
+ * @param {string} dir Directory
+ * @param {Function} [cb] Callback
+ * @returns {Promise}a
+ */
 function deleteDirectory( dir, cb ) {
 
 	return new Promise( function ( resolve, reject ) {
