@@ -2,11 +2,15 @@
   "name": "create-10up",
   "version": "0.0.1",
   "description": "CLI Command for scaffolding 10up projects",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timwright12/10up-node-scaffold.git"
+  },
   "main": "index.js",
   "scripts": {
     "create-10up": "node 10upScaffold.js"
   },
-  "author": "10up LLC",
+  "author": "10up Inc",
   "license": "MIT",
   "files": [
     "index.js",
