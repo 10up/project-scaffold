@@ -51,7 +51,7 @@ if ( 'undefined' === typeof directoryName ) {
 
 const nameSpaces = directoryName.replace( /-/g, ' ' );
 const nameCapitalize = nameSpaces.replace( /\b\w/g, l => l.toUpperCase() );
-const nameCamelCase = nameCapitalize.replace( ' ', '' );
+const nameCamelCase = nameCapitalize.replace( / /g, '' );
 const nameUnderscores = directoryName.replace( /-/g, '_' );
 const nameUnderscoresUppercase = nameUnderscores.toUpperCase();
 
