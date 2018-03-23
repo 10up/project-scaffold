@@ -11,6 +11,11 @@
     "create-10up": "node 10upScaffold.js"
   },
   "author": "10up Inc",
+  "contributors": [
+    "Tim Wright <timwright12@gmail.com> (https://10up.com)",
+    "Dave Ross <dave.ross@10up.com> (https://10up.com)",
+    "Eric Mann <eric@eamann.com> (https://eamann.com)"
+  ],
   "license": "MIT",
   "files": [
     "index.js",
