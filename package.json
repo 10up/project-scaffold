@@ -6,7 +6,7 @@
   "scripts": {
     "create-10up": "node 10upScaffold.js"
   },
-  "author": "10up LLC",
+  "author": "10up Inc",
   "license": "MIT",
   "files": [
     "index.js",
