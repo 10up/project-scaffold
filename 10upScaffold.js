@@ -36,7 +36,7 @@ if ( 'undefined' === typeof projectType || undefined === packageJson.tenup.repos
 	console.log( 'For example:' );
 	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'theme my-10up-project' ) }` );
 	console.log();
-	process.exit( 1 );	
+	process.exit( 1 );
 }
 
 if ( 'undefined' === typeof directoryName ) {
@@ -108,7 +108,7 @@ const directoriesToRename = [
 if ( fs.existsSync( './' + directoryName ) ) {
 
 	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
-	
+
 	// Bail out so you don't delete the directory or error out
 	process.exit( 1 );
 
@@ -122,144 +122,146 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	Clone the repo and get to work
 */
 
-clone( packageJson.tenup.repos[projectType], './' + directoryName,
-	function( err ) {
 
-		if ( err ) {
-
-			console.log( err ) ;
-
-		} else {
-
-			console.log( chalk.green( '✔ Clone Successful' ) );
-
-			// Delete unnecessary files
-			if ( filesToRemove.length ) {
-				filesToRemove.forEach( function( file ) {
-					
-					// Check to see if the file exists before trying to delete it
-					if ( fs.existsSync( directoryName + '/' + file ) ) {
-						deleteFile( directoryName, file, function() {
-							console.log( chalk.green( `✔ ${file} deleted` ) );
-						} );
-					}
-				} );
-			}
-			
-			// Delete unnecessary directories
-			if ( directoriesToRemove.length ) {
-				directoriesToRemove.forEach( function( dir ) {
-					if ( fs.existsSync( directoryName + '/' + dir ) ) {
-						deleteDirectory( directoryName + '/' + dir, function() {
-							console.log( chalk.green( `✔ ${dir} deleted` ) );
-						} );
-					}
-				} );
-			}
-
-			// Synchronously find and replace text within files
-			textToReplace.forEach( function( text ) {
-
-				try {
-					const changes = replace.sync( {
-						files: directoryName + '/**/*.*',
-						from: text.from,
-						to: text.to,
-						encoding: 'utf8',
+cloneRepo( packageJson.tenup.repos[projectType], './' + directoryName )
+	.then( () => {
+		console.log( chalk.green( '✔ Clone Successful' ) );
+	} )
+	.then( () => {
+		// Delete unnecessary files
+		if ( filesToRemove.length ) {
+			return filesToRemove.map( file => {
+				if (fs.existsSync( directoryName + '/' + file ) ) {
+					return deleteFile( directoryName, file ).then( () => {
+						console.log( chalk.green( `✔ ${file} deleted` ) );
 					} );
-
-					console.log(chalk.green.bold( `✔ Modified files: ` ), changes.join(', ') );
+				} else {
+					return Promise.resolve();
 				}
-
-				catch ( error ) {
-					console.error( 'Error occurred:', error );
-				}
-
-			} );
-
-			// Rename directories
-			directoriesToRename.forEach( function( dir ) {
-				if ( fs.existsSync( directoryName + '/' + dir.from ) ) {
-					fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
-						if ( err ) throw err;
-						console.log( chalk.green( '✔ Renamed ' + dir.from ) );
-					} );
-				}
-			} );
+			} )
 		}
+	} )
+	.then( () => {
+		// Delete unnecessary directories
+		if ( directoriesToRemove.length ) {
+			return directoriesToRemove.map( dir => {
+				if (fs.existsSync( directoryName + '/' + dir ) ) {
+					return deleteDirectory( directoryName + '/' + dir ).then( () => {
+						console.log( chalk.green( `✔ ${dir} deleted` ) );
+					} );
+				} else {
+					return Promise.resolve();
+				}
+			} )
+		}
+	} )
+	.then( () => {
+		// Synchronously find and replace text within files
+		textToReplace.forEach( text => {
+			try {
+				const changes = replace.sync( {
+					files: directoryName + '/**/*.*',
+					from: text.from,
+					to: text.to,
+					encoding: 'utf8',
+				} );
 
-	}
-); // clone()
+				console.log(chalk.green.bold( `✔ Modified files: ` ), changes.join(', ') );
+			} catch ( error ) {
+				console.error( 'Error occurred:', error );
+			}
+		} );
+	} )
+	.then( () => {
+		// Rename directories
+		directoriesToRename.forEach( function( dir ) {
+			if ( fs.existsSync( directoryName + '/' + dir.from ) ) {
+				fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, err => {
+					if ( err ) throw err;
+					console.log( chalk.green( '✔ Renamed ' + dir.from ) );
+				} );
+			}
+		} );
+	} )
+	.then( () => console.log( '✔ All done!' ) )
+	.catch( err => console.error( err ) );
 
 /**
- * Delete files
- * @param {string} dir Directory path
- * @param {string} [file] Filename to delete (optional, deletes directory if undefined)
- * @param {Function} [cb] Callback 
+ * Convert the Git clone module to use a promise.
+ *
+ * @param {string} repo Repository path to clone
+ * @param {string} path Local path for cloning the repo
+ *
  * @returns {Promise}
  */
-function deleteFile( dir, file, cb ) {
+function cloneRepo( repo, path ) {
+	return new Promise( ( resolve, reject ) => {
+		clone( repo, path, err => {
+			if ( err ) throw err;
 
-	return new Promise( function ( resolve, reject ) {
-		var filePath = path.join( dir, file );
-		fs.lstat( filePath, function ( err, stats ) {
+			resolve( path );
+		} );
+	} );
+}
+
+/**
+ * Delete files, recursing through subdirectories if necessary
+ *
+ * @param {string} dir    Directory path
+ * @param {string} [file] Filename to delete (optional, deletes directory if undefined)
+ *
+ * @returns {Promise}
+ */
+function deleteFile( dir, file ) {
+	return new Promise( ( resolve, reject ) => {
+		const filePath = path.join( dir, file );
+		fs.lstat( filePath, ( err, stats ) => {
 			if ( err ) {
-				return reject( err );
-			}
-			if ( stats.isDirectory() ) {
-				resolve( deleteDirectory( filePath ) );
+				reject( err );
+			} else if ( stats.isDirectory() ) {
+				deleteDirectory( filePath ).then( () => resolve() );
 			} else {
-				fs.unlink( filePath, function ( err ) {
+				fs.unlink( filePath, err => {
 					if ( err ) {
 						return reject( err );
 					}
+
 					resolve();
 				} );
 			}
 		} );
-
-		if ( 'function' === typeof cb ) {
-			cb.call( this );
-		}
-
 	} );
-
 } // deleteFile()
 
 /**
  * Delete directories
+ *
  * @param {string} dir Directory
- * @param {Function} [cb] Callback
+ *
  * @returns {Promise}
  */
-function deleteDirectory( dir, cb ) {
-
-	return new Promise( function ( resolve, reject ) {
-		fs.access( dir, function ( err ) {
+function deleteDirectory( dir ) {
+	return new Promise( ( resolve, reject ) => {
+		fs.access( dir, err => {
 			if ( err ) {
 				return reject( err );
 			}
-			fs.readdir( dir, function ( err, files ) {
+
+			fs.readdir( dir, ( err, files ) => {
 				if ( err ) {
 					return reject( err );
 				}
-				Promise.all( files.map( function ( file ) {
-					return deleteFile( dir, file );
-				} ) ).then( function () {
-					fs.rmdir( dir, function ( err ) {
+
+				Promise.all( files.map( file => deleteFile( dir, file ) ) ).then( () => {
+					fs.rmdir( dir, err => {
 						if ( err ) {
 							return reject( err ) ;
 						}
+
 						resolve();
 					} );
-				} ).catch( reject );
+				} );
 			} );
 		} );
-		
-		if ( 'function' === typeof cb ) {
-			cb.call( this );
-		}
-		
 	} );
-
-}; // deleteDirectory()
+} // deleteDirectory()
