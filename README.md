@@ -1,10 +1,10 @@
 # 10up node scaffold
 
 ## Set Up
-`npm install`
+`npm i`
 
 ## Global Installation
-`npm install . -g`
+`npm link`
 
 ## Run Globally
 `cd <your-project-directory>`
