@@ -4,7 +4,7 @@
 `npm i`
 
 ## Global Installation
-`npm link`
+`npm install . -g` OR `npm link`
 
 ## Run Globally
 `cd <your-project-directory>`
