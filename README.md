@@ -24,6 +24,10 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 `create-10up <project-type> <project-name>`
 
+### Project Types
+- theme
+- plugin
+
 ### Example Usage
 `create-10up theme human-theme-name`
 
