@@ -29,3 +29,7 @@ Create a symlink to this location in your home directory to make the `create-10u
 `create-10up theme human-theme-name`
 
 `create-10up plugin human-plugin-name`
+
+### Updating this tool
+
+`create-10up` is in active development. To get the latest, navigate to this folder in your home directory and `git pull`
