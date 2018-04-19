@@ -32,4 +32,4 @@ Create a symlink to this location in your home directory to make the `create-10u
 
 ### Updating this tool
 
-`create-10up` is in active development. To get the latest, navigate to this folder in your home directory and `git pull`
+`create-10up` is in active development. To get the latest, navigate to this folder in your home directory (or wherever else you have it installed) and `git pull`.
