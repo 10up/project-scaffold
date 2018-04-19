@@ -19,6 +19,7 @@ Make the `create-10up` command available globally on your system by creating a s
 `cd <your-project-directory>`
 
 `create-10up <project-type> <theme-name>`
+`npm install`
 
 ### Example Usage
 
