@@ -1,4 +1,4 @@
-# 10up node scaffold
+# 10up Project Scaffold
 
 ## Set Up
 `npm install`
