@@ -24,8 +24,6 @@ If you have an update for the theme or plugin that is generated, please submit t
 *   theme
 *   plugin
 
-`npm install`
-
 ## Example Usage
 
 `cd <your-project-directory>`
@@ -33,6 +31,8 @@ If you have an update for the theme or plugin that is generated, please submit t
 `create-10up theme human-theme-name`
 
 `create-10up plugin human-plugin-name`
+
+`npm install`
 
 ## Updating this tool
 
