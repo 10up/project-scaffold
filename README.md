@@ -10,25 +10,30 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 ## Set Up from Github
 
-1. Clone the [repository]( https://github.com/10up/project-scaffold) locally
-2. Run `cd project-scaffold`
-3. Run `npm install`
-4. Run `npm link` to make the `create-10up` command global
+1.  Clone the [repository](https://github.com/10up/project-scaffold) locally
+2.  Run `cd project-scaffold`
+3.  Run `npm install`
+4.  Run `npm link` to make the `create-10up` command global
 
 ## Setup from npmjs.com
 
 `npm install create-10up -g`
 
-## Run Globally
+## Project Types
+
+*   theme
+*   plugin
+
+## Example Usage
+
 `cd <your-project-directory>`
 
-`create-10up <project-type> <project-name>`
-
-### Project Types
-- theme
-- plugin
-
-### Example Usage
 `create-10up theme human-theme-name`
 
 `create-10up plugin human-plugin-name`
+
+`npm install`
+
+## Updating this tool
+
+`create-10up` is in active development. To get the latest, navigate to this folder in your home directory (or wherever else you have it installed) and `git pull`.
