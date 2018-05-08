@@ -17,7 +17,7 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 ## Setup from npmjs.com
 
-`npm install create-10up -g`
+`npm install @10up/create-10up -g`
 
 ## Project Types
 
