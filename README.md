@@ -37,3 +37,12 @@ If you have an update for the theme or plugin that is generated, please submit t
 ## Updating this tool
 
 `create-10up` is in active development. To get the latest, navigate to this folder in your home directory (or wherever else you have it installed) and `git pull`.
+
+## Learn more about the packages used with this project
+
+*   [Chalk](https://www.npmjs.com/package/chalk)
+*   [Commander](https://www.npmjs.com/package/commander)
+*   [FS extra](https://www.npmjs.com/package/fs-extra)
+*   [Git clone](https://www.npmjs.com/package/git-clone)
+*   [Path](https://www.npmjs.com/package/path)
+*   [Replace in file](https://www.npmjs.com/package/replace-in-file)
