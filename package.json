@@ -29,5 +29,9 @@
       "theme": "https://github.com/10up/theme-scaffold",
       "plugin": "https://github.com/10up/plugin-scaffold"
     }
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "~8.11"
   }
 }
