@@ -36,10 +36,10 @@ if ( 'undefined' === typeof projectType || undefined === packageJson.tenup.repos
 	console.log( 'For example:' );
 	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'theme my-10up-project' ) }` );
 	console.log();
-	process.exit( 1 );	
+	process.exit( 1 );
 }
 
-if ( 'undefined' === typeof directoryName ) {
+if ( 'undefined' === typeof directoryName || '' === directoryName ) {
 	console.error( 'Please specify the project directory:' );
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-directory>')}` );
 	console.log();
@@ -108,7 +108,7 @@ const directoriesToRename = [
 if ( fs.existsSync( './' + directoryName ) ) {
 
 	console.log( chalk.yellow.bold( '✘ Warning: ' ) + '"' + directoryName + '" directory already exists, please remove it or change the path' );
-	
+
 	// Bail out so you don't delete the directory or error out
 	process.exit( 1 );
 
@@ -136,7 +136,7 @@ clone( packageJson.tenup.repos[projectType], './' + directoryName,
 			// Delete unnecessary files
 			if ( filesToRemove.length ) {
 				filesToRemove.forEach( function( file ) {
-					
+
 					// Check to see if the file exists before trying to delete it
 					if ( fs.existsSync( directoryName + '/' + file ) ) {
 						deleteFile( directoryName, file, function() {
@@ -145,7 +145,7 @@ clone( packageJson.tenup.repos[projectType], './' + directoryName,
 					}
 				} );
 			}
-			
+
 			// Delete unnecessary directories
 			if ( directoriesToRemove.length ) {
 				directoriesToRemove.forEach( function( dir ) {
@@ -195,7 +195,7 @@ clone( packageJson.tenup.repos[projectType], './' + directoryName,
  * Delete files
  * @param {string} dir Directory path
  * @param {string} [file] Filename to delete (optional, deletes directory if undefined)
- * @param {Function} [cb] Callback 
+ * @param {Function} [cb] Callback
  * @returns {Promise}
  */
 function deleteFile( dir, file, cb ) {
@@ -255,11 +255,11 @@ function deleteDirectory( dir, cb ) {
 				} ).catch( reject );
 			} );
 		} );
-		
+
 		if ( 'function' === typeof cb ) {
 			cb.call( this );
 		}
-		
+
 	} );
 
 }; // deleteDirectory()
