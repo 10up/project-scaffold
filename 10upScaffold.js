@@ -64,7 +64,7 @@ const directoriesToRemove = ['.git'];
 // Objects of text strings to find and replace
 const textToReplace = [
 	{
-		from: /TenUpScaffold/g,
+		from: /TenUpScaffold|PluginScaffold|ThemeScaffold/g,
 		to: nameCamelCase
 	},
 	{
