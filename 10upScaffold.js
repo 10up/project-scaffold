@@ -96,8 +96,8 @@ const directoriesToRename = [
 		to: directoryName
 	},
 	{
-		from: 'languages/TenUpScaffold.pot',
-		to: 'languages/' + nameCamelCase + '.pot'
+		from: 'languages/ten-up-scaffold.pot',
+		to: 'languages/' + directoryName + '.pot'
 	}
 ];
 
