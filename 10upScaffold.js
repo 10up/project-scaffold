@@ -96,14 +96,16 @@ const directoriesToRename = [
 		to: directoryName
 	},
 	{
-		from: 'tenup-scaffold-api-theme',
-		to: directoryName
+		from: 'backend/wp-content/themes/tenup-scaffold-api-theme',
+		to: 'backend/wp-content/themes/' + directoryName + '-api-theme'
 	},
 	{
 		from: 'languages/TenUpScaffold.pot',
 		to: 'languages/' + nameCamelCase + '.pot'
 	}
 ];
+
+console.log(directoriesToRename);
 
 /*
 	Make sure the directory isn't already there before running the script
