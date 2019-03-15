@@ -105,8 +105,6 @@ const directoriesToRename = [
 	}
 ];
 
-console.log(directoriesToRename);
-
 /*
 	Make sure the directory isn't already there before running the script
 */
