@@ -8,6 +8,8 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 [View the plugin repository](https://github.com/10up/plugin-scaffold)
 
+[View the headless WP site repository](https://github.com/magnificode/10up-WP-React-Scaffold)
+
 ## Set Up from Github
 
 1.  Clone the [repository](https://github.com/10up/project-scaffold) locally
@@ -23,6 +25,7 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 *   theme
 *   plugin
+*   headless (headless API theme + headless React site)
 
 ## Example Usage
 
@@ -31,6 +34,8 @@ If you have an update for the theme or plugin that is generated, please submit t
 `create-10up theme human-theme-name`
 
 `create-10up plugin human-plugin-name`
+
+`create-10up headless human-headless-directory-name`
 
 `npm install`
 
