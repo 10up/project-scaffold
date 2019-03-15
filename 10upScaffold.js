@@ -31,7 +31,7 @@ const program = new commander.Command( packageJson.name )
 if ( 'undefined' === typeof projectType || undefined === packageJson.tenup.repos[projectType]) {
 	console.error( 'Please specify the what type of project to create:' );
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-type> <project-directory>')}` );
-	console.log( " Valid project types are 'theme' and 'plugin'." );
+	console.log( " Valid project types are 'theme', 'plugin' and 'headless'." );
 	console.log();
 	console.log( 'For example:' );
 	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'theme my-10up-project' ) }` );
@@ -93,6 +93,10 @@ const directoriesToRename = [
 	},
 	{
 		from: 'tenup-plugin-scaffold',
+		to: directoryName
+	},
+	{
+		from: 'tenup-scaffold-api-theme',
 		to: directoryName
 	},
 	{
