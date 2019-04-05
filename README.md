@@ -1,6 +1,6 @@
 # 10up Project Scaffold
 
-The 10up Project Scaffold is a command line tool to quickly initialize a started theme or plugin for your new project. It adheres to all 10up's best practice coding standards and has been reviewed for security, performance, and scalability. This project is aimed specifically at the work that 10up does, but we welcome all community contributions.
+The 10up Project Scaffold is a command line tool to quickly initialize a starter theme or plugin for your new project. It adheres to all 10up's best practice coding standards and has been reviewed for security, performance, and scalability. This project is aimed specifically at the work that 10up does, but we welcome all community contributions.
 
 If you have an update for the theme or plugin that is generated, please submit those issues or pull requests with the associated repository:
 
