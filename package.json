@@ -28,7 +28,7 @@
     "repos": {
       "theme": "https://github.com/10up/theme-scaffold",
       "plugin": "https://github.com/10up/plugin-scaffold",
-      "headless": "https://github.com/magnificode/10up-WP-React-Scaffold.git"
+      "headless": "https://github.com/10up/headless-react-theme-scaffold"
     }
   },
   "engineStrict": true,
