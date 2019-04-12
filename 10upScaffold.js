@@ -31,7 +31,7 @@ const program = new commander.Command( packageJson.name )
 if ( 'undefined' === typeof projectType || undefined === packageJson.tenup.repos[projectType]) {
 	console.error( 'Please specify the what type of project to create:' );
 	console.log(`  ${chalk.cyan(program.name())} ${chalk.green('<project-type> <project-directory>')}` );
-	console.log( " Valid project types are 'theme' and 'plugin'." );
+	console.log( " Valid project types are 'theme', 'plugin' and 'site'." );
 	console.log();
 	console.log( 'For example:' );
 	console.log(`  ${chalk.cyan( program.name() ) } ${chalk.green( 'theme my-10up-project' ) }` );
@@ -119,77 +119,88 @@ if ( fs.existsSync( './' + directoryName ) ) {
 }
 
 /*
-	Clone the repo and get to work
-*/
+ * Clone the repo and get to work
+**/
 
-clone( packageJson.tenup.repos[projectType], './' + directoryName,
-	function( err ) {
+function cloneproject( projectType, directoryName ) {
+	
+	clone( packageJson.tenup.repos[projectType], directoryName,
+		function( err ) {
 
-		if ( err ) {
+			if ( err ) {
 
-			console.log( err ) ;
+				console.log( err ) ;
 
-		} else {
+			} else {
 
-			console.log( chalk.green( '✔ Clone Successful' ) );
+				console.log( chalk.green( '✔ Clone Successful' ) );
 
-			// Delete unnecessary files
-			if ( filesToRemove.length ) {
-				filesToRemove.forEach( function( file ) {
+				// Delete unnecessary files
+				if ( filesToRemove.length ) {
+					filesToRemove.forEach( function( file ) {
 
-					// Check to see if the file exists before trying to delete it
-					if ( fs.existsSync( directoryName + '/' + file ) ) {
-						deleteFile( directoryName, file, function() {
-							console.log( chalk.green( `✔ ${file} deleted` ) );
+						// Check to see if the file exists before trying to delete it
+						if ( fs.existsSync( directoryName + '/' + file ) ) {
+							deleteFile( directoryName, file, function() {
+								console.log( chalk.green( `✔ ${file} deleted` ) );
+							} );
+						}
+					} );
+				}
+
+				// Delete unnecessary directories
+				if ( directoriesToRemove.length ) {
+					directoriesToRemove.forEach( function( dir ) {
+						if ( fs.existsSync( directoryName + '/' + dir ) ) {
+							deleteDirectory( directoryName + '/' + dir, function() {
+								console.log( chalk.green( `✔ ${dir} deleted` ) );
+							} );
+						}
+					} );
+				}
+
+				// Synchronously find and replace text within files
+				textToReplace.forEach( function( text ) {
+
+					try {
+						const changes = replace.sync( {
+							files: directoryName + '/**/*.*',
+							from: text.from,
+							to: text.to,
+							encoding: 'utf8',
+						} );
+
+						console.log(chalk.green.bold( `✔ Modified files: ` ), changes.join(', ') );
+					}
+
+					catch ( error ) {
+						console.error( 'Error occurred:', error );
+					}
+
+				} );
+
+				// Rename directories
+				directoriesToRename.forEach( function( dir ) {
+					if ( fs.existsSync( directoryName + '/' + dir.from ) ) {
+						fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
+							if ( err ) throw err;
+							console.log( chalk.green( '✔ Renamed ' + dir.from ) );
 						} );
 					}
 				} );
 			}
 
-			// Delete unnecessary directories
-			if ( directoriesToRemove.length ) {
-				directoriesToRemove.forEach( function( dir ) {
-					if ( fs.existsSync( directoryName + '/' + dir ) ) {
-						deleteDirectory( directoryName + '/' + dir, function() {
-							console.log( chalk.green( `✔ ${dir} deleted` ) );
-						} );
-					}
-				} );
-			}
-
-			// Synchronously find and replace text within files
-			textToReplace.forEach( function( text ) {
-
-				try {
-					const changes = replace.sync( {
-						files: directoryName + '/**/*.*',
-						from: text.from,
-						to: text.to,
-						encoding: 'utf8',
-					} );
-
-					console.log(chalk.green.bold( `✔ Modified files: ` ), changes.join(', ') );
-				}
-
-				catch ( error ) {
-					console.error( 'Error occurred:', error );
-				}
-
-			} );
-
-			// Rename directories
-			directoriesToRename.forEach( function( dir ) {
-				if ( fs.existsSync( directoryName + '/' + dir.from ) ) {
-					fs.rename( directoryName + '/' + dir.from, directoryName + '/' + dir.to, function ( err ) {
-						if ( err ) throw err;
-						console.log( chalk.green( '✔ Renamed ' + dir.from ) );
-					} );
-				}
-			} );
 		}
+	); // clone()
+}
+if ( 'site' === projectType ) {
+	cloneproject( 'site', './' );
+	cloneproject( 'plugin', './' + 'plugins/' + directoryName );
+	cloneproject( 'theme', './' + 'themes/' + directoryName );
+} else {
+	cloneproject( projectType, './' + directoryName );
 
-	}
-); // clone()
+}
 
 /**
  * Delete files
