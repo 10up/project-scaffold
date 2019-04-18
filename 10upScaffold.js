@@ -134,10 +134,10 @@ const run = async () => {
 		error.log( 'Invalid Project Type.' );
 	}
 
-	console.log( chalk.green( '(1/1) Clone theme scaffold' ) );
+	console.log( chalk.green( '(1/1) Clone something scaffold' ) );
 	console.log( chalk.green( '(1/2) Bla bla bla' ) );
 	console.log( chalk.green( '(1/3) Yak yak yak' ) );
-	console.log( chalk.green( '> Setup Complete. Have fun with the project!' ) );
+	console.log( chalk.greenBright( '> Setup Complete. Have fun with the project!' ) );
 };
 
 run();
