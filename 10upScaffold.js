@@ -9,6 +9,16 @@ const packageJson = require( './package.json' );
 const path = require( 'path' );
 const replace = require( 'replace-in-file' );
 
+const {
+	promptFields,
+	promptToContinue,
+	promptOptions,
+	startWith,
+	onFinalError,
+	exit,
+	DontContinue,
+} = require( 'interactive-cli' );
+
 // @TODO: Update this with the final path
 let directoryName = '',
 	projectType = 'theme';
@@ -16,6 +26,102 @@ let directoryName = '',
 /*
 	Set up the CLI
 */
+new Promise((resolve, reject) => {
+  // Do some preparation, such as getting
+  // a reference to a database or authenticating
+  resolve({
+    createUser: () => Promise.resolve(),
+    listUsers: () => Promise.resolve({
+      "31725276-73a9-4830-aa77-a86fce4dd7f8": "Leonardo DiCaprio",
+      "53bd3330-4bd7-47c5-a685-f1039e043eae": "Jennifer Lopez"
+    }),
+    deleteUser: () => Promise.resolve(),
+  })
+})
+.then(api => {
+  const initialOptions = {
+    createUser: "Create a new user",
+    deleteUser: "Delete a user"
+  }
+  const handler = (selection) => {
+    switch (selection) {
+      case 'createUser':
+        return createUser(api)
+ 
+      case 'deleteUser':
+        return deleteUser(api)
+ 
+      default: {
+        throw new ExitScript(`Unknown selection "${selection}"`)
+      }
+    }
+  }
+ 
+  return startWith("Would you like to", initialOptions, handler)
+})
+.catch(onFinalError)
+.then(exit)
+ 
+function createUser (api) {
+  const user = {}
+  return promptFields("Enter user's email", "email")
+  .then(email => { user.email = email })
+ 
+  .then(() => promptFields("What's the name for the user", ["firstname", "lastname"]))
+  .then(res => {
+    user.firstname = res.firstname
+    user.lastname = res.lastname
+  })
+ 
+  .then(() => {
+    return api.createUser(user)
+    .catch(err => {
+      throw DontContinue("User could not be created because of error: " + err.message)
+    })
+  })
+ 
+  .then(() => {
+    console.log(`User ${user.firstname} ${user.lastname} was created successfully!`)
+  })
+ 
+}
+ 
+function deleteUser (api) {
+  const data = {}
+  return api.listUsers()
+  .then(users => {
+    data.users = users;
+    return users
+  })
+  .then(users => promptOptions("Which user would you like to delete?", users))
+  .then(selection => {
+    data.selection = selection
+    return selection
+  })
+  .then(selection => {
+    console.log("\n" + 'Are you absolutely sure?')
+    return promptToContinue(selection)
+  })
+  .then(selection => {
+    api.deleteUser(selection)
+  })
+  .then(() => {
+    console.log(`User ${data.users[data.selection]} was successfully deleted!`)
+  })
+}
+
+console.log( 'aaaaa' );
+console.log( projectType );
+if ( 'theme' === projectType ) {
+	console.log( 'bbbb' );
+	createUser();
+	return;
+}
+
+
+
+
+
 
 const program = new commander.Command( packageJson.name )
 	.version( packageJson.version )
