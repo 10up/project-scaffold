@@ -31,7 +31,7 @@
     "repos": {
       "theme": "https://github.com/10up/theme-scaffold",
       "plugin": "https://github.com/10up/plugin-scaffold",
-      "site": "https://github.com/turtlepod/site-scaffold"
+      "wp-content": "https://github.com/turtlepod/site-scaffold"
     }
   },
   "engineStrict": true,

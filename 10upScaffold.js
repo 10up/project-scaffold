@@ -13,11 +13,51 @@ const inquirer = require( 'inquirer' );
 const shell = require( 'shelljs' );
 
 /**
+ *  Start!
+ */
+let directoryName = '';
+let projectType = '';
+const answers = {
+	type: '',
+	themeName: '',
+	pluginName: '',
+	projectName: '',
+};
+
+/**
+ * Commander
+ */
+const program = new commander.Command( packageJson.name )
+	.version( packageJson.version )
+	.arguments( '<project-type> <project-directory>' )
+	.usage( `${chalk.green( '<project-type> <project-directory>' )} [options]` )
+	.action( (type, name) => {
+		projectType   = type.toLowerCase();
+		directoryName = name.toLowerCase();
+	} )
+	.allowUnknownOption()
+	.parse( process.argv );
+
+if ( projectType && packageJson.tenup.repos[ projectType ] ) {
+	answers.type = projectType;
+
+	if ( directoryName && '' !== directoryName ) {
+		if ( 'theme' === projectType ) {
+			answers.themeName = directoryName;
+		} else if ( 'plugin' === projectType ) {
+			answers.themeName = directoryName;
+		}  else if ( 'wp-content' === projectType ) {
+			answers.projectName = directoryName;
+		}
+	}
+}
+
+/**
  * Intro Logo.
  */
 const openSesame = () => {
 	console.log(
-		chalk.red(
+		chalk.redBright(
 			figlet.textSync( 'create-10up', {
 				horizontalLayout: "default",
 				verticalLayout: "default"
@@ -48,8 +88,8 @@ const askType = () => {
 /**
  * Ask: Theme Name
  */
-const askThemeName = ( optional = false ) => {
-	const msg = optional ? 'Leave empty if not needed.' : '(required)';
+const askThemeName = ( required = true ) => {
+	const msg = required ? '(required)' : '(optional)';
 	const questions = [
 		{
 			name: 'THEMENAME',
@@ -63,8 +103,8 @@ const askThemeName = ( optional = false ) => {
 /**
  * Ask: Plugin Name.
  */
-const askPluginName = ( optional = false ) => {
-	const msg = optional ? 'Leave empty if not needed.' : '(required)';
+const askPluginName = ( required = true ) => {
+	const msg = required ? '(required)' : '(optional)';
 	const questions = [
 		{
 			name: 'PLUGINNAME',
@@ -94,32 +134,28 @@ const askProjectName = () => {
  */
 const run = async () => {
 	openSesame();
-	const answers = {
-		type: '',
-		themeName: '',
-		pluginName: '',
-		projectName: '',
-	};
 
 	// Ask project type.
-	const answerType = await askType();
-	answers.type = answerType.TYPE;
+	if ( '' === answers.type ) {
+		const answerType = await askType();
+		answers.type = answerType.TYPE;
+	}
 
-	if ( 'theme' === answers.type ) {
+	if ( 'theme' === answers.type && '' === answers.themeName ) {
 		const answerThemeName = await askThemeName();
 		answers.themeName = answerThemeName.THEMENAME;
 		if ( ! answers.themeName ) {
 			console.error( 'Theme name is required. Please try again.' );
 			return;
 		}
-	} else if ( 'plugin' === answers.type ) {
+	} else if ( 'plugin' === answers.type && '' === answers.pluginName ) {
 		const answerPluginName = await askPluginName();
 		answers.pluginName = answerPluginName.PLUGINNAME;
 		if ( ! answers.pluginName ) {
 			console.error( 'Plugin name is required. Please try again.' );
 			return;
 		}
-	} else if ( 'wp-content' ===  answers.type ) {
+	} else if ( 'wp-content' ===  answers.type && '' === answers.projectName ) {
 		const answerProjectName = await askProjectName();
 		answers.projectName = answerProjectName.PROJECTNAME;
 		if ( ! answers.projectName ) {
@@ -130,9 +166,8 @@ const run = async () => {
 		answers.themeName = answerThemeName.THEMENAME;
 		const answerPluginName = await askPluginName( true );
 		answers.pluginName = answerPluginName.PLUGINNAME;
-	} else {
-		error.log( 'Invalid Project Type.' );
 	}
+	console.log(  answers );
 
 	console.log( chalk.green( '(1/1) Clone something scaffold' ) );
 	console.log( chalk.green( '(1/2) Bla bla bla' ) );
