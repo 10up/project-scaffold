@@ -2,7 +2,7 @@
 
 > The 10up Project Scaffold is a command line tool to quickly initialize a starter theme or plugin for your new project. It adheres to all 10up's best practice coding standards and has been reviewed for security, performance, and scalability. This project is aimed specifically at the work that 10up does, but we welcome all community contributions.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![MIT License](https://img.shields.io/github/license/10up/project-scaffold.svg)](https://github.com/10up/project-scaffold/blob/master/LICENSE.md)
 
 ## Contributing
 
