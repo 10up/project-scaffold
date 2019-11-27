@@ -13,12 +13,11 @@ const { exec } = require('child_process');
 
 // @TODO: Update this with the final path
 let directoryName = '',
-	projectType = 'theme';
+	projectType = '';
 
 /*
 	Set up the CLI
 */
-
 const program = new commander.Command( packageJson.name )
 	.version( packageJson.version )
 	.arguments( '<project-type> <project-directory>' )
@@ -127,8 +126,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 /*
 	Clone the repo and get to work
 */
-
-clone( packageJson.tenup.repos[projectType], './' + directoryName, { 'checkout': 'feature/dethemify-scaffold' },
+clone( packageJson.tenup.repos[projectType], './' + directoryName,
 	function( err ) {
 
 		if ( err ) {
