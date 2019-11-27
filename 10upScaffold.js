@@ -97,10 +97,6 @@ const directoriesToRename = [
 		to: directoryName
 	},
 	{
-		from: 'backend/wp-content/plugins/tenup-scaffold-api-plugin',
-		to: 'backend/wp-content/plugins/' + directoryName + '-api'
-	},
-	{
 		from: 'languages/TenUpScaffold.pot',
 		to: 'languages/' + nameCamelCase + '.pot'
 	}
@@ -138,7 +134,8 @@ clone( packageJson.tenup.repos[projectType], './' + directoryName,
 			console.log( chalk.green( '✔ Clone Successful' ) );
 
 			if ( 'headless' === projectType ) {
-				// Run and necessary commands for the new scaffold
+
+				// Run any necessary commands for the new scaffold
 				exec( 'cd ' + directoryName + '/backend/wp-content && composer install --no-dev && cd -' , (err, stdout, stderr) => {
 					if ( err ) {
 						console.log( 'Unable to install Composer, please set this up manually.' );
