@@ -8,6 +8,8 @@ const fs = require( 'fs-extra' );
 const packageJson = require( './package.json' );
 const path = require( 'path' );
 const replace = require( 'replace-in-file' );
+const { exec } = require('child_process');
+
 
 // @TODO: Update this with the final path
 let directoryName = '',
@@ -96,8 +98,8 @@ const directoriesToRename = [
 		to: directoryName
 	},
 	{
-		from: 'backend/wp-content/themes/tenup-scaffold-api-theme',
-		to: 'backend/wp-content/themes/' + directoryName + '-api-theme'
+		from: 'backend/wp-content/plugins/tenup-scaffold-api-plugin',
+		to: 'backend/wp-content/plugins/' + directoryName + '-api'
 	},
 	{
 		from: 'languages/TenUpScaffold.pot',
@@ -126,7 +128,7 @@ if ( fs.existsSync( './' + directoryName ) ) {
 	Clone the repo and get to work
 */
 
-clone( packageJson.tenup.repos[projectType], './' + directoryName,
+clone( packageJson.tenup.repos[projectType], './' + directoryName, { 'checkout': 'feature/dethemify-scaffold' },
 	function( err ) {
 
 		if ( err ) {
@@ -136,6 +138,22 @@ clone( packageJson.tenup.repos[projectType], './' + directoryName,
 		} else {
 
 			console.log( chalk.green( '✔ Clone Successful' ) );
+
+			if ( 'headless' === projectType ) {
+				// Run and necessary commands for the new scaffold
+				exec( 'cd ' + directoryName + '/backend/wp-content && composer install --no-dev && cd -' , (err, stdout, stderr) => {
+					if ( err ) {
+						console.log( 'Unable to install Composer, please set this up manually.' );
+						console.log( err );
+					}
+
+				});
+				exec( 'cd ' + directoryName + '/backend/wp-content/plugins/tenup-scaffold-api-plugin && composer install && cd -' , (err, stdout, stderr) => {
+					if ( err ) {
+						'Unable to run composer install on plugin, please set this up manually.'
+					}
+				});
+			}
 
 			// Delete unnecessary files
 			if ( filesToRemove.length ) {
@@ -190,6 +208,7 @@ clone( packageJson.tenup.repos[projectType], './' + directoryName,
 					} );
 				}
 			} );
+
 		}
 
 	}
