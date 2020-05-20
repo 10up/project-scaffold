@@ -1,6 +1,6 @@
 {
   "name": "@10up/create-10up",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CLI Command for scaffolding 10up projects",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,8 @@
   "tenup": {
     "repos": {
       "theme": "https://github.com/10up/theme-scaffold",
-      "plugin": "https://github.com/10up/plugin-scaffold"
+      "plugin": "https://github.com/10up/plugin-scaffold",
+      "component": "https://github.com/10up/component-scaffold"
     }
   },
   "engineStrict": true,
