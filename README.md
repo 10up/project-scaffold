@@ -21,14 +21,15 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 ## Setup from npmjs.com
 
-`npm install @10up/create-10up -g`
+`npm install @10up/create-10up -g` or `npx @10up/create-10up [type] [name]`
 
 ## Project Types
 
-*   theme
-*   plugin
+* theme
+* plugin
+* component
 
-## Example Usage
+## Example Usage with local installation
 
 `cd <your-project-directory>`
 
@@ -36,7 +37,15 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 `create-10up plugin human-plugin-name`
 
-`npm install`
+`create-10up component human-component-name`
+
+## Example Usage without local installation
+
+`npx @10up/create-10up theme human-theme-name`
+
+`npx @10up/create-10up plugin human-plugin-name`
+
+`npx @10up/create-10up component human-component-name`
 
 ## Updating this tool
 
