@@ -1,6 +1,6 @@
 {
   "name": "@10up/create-10up",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI Command for scaffolding 10up projects",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,6 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": "~8.11"
+    "node": ">=8.11"
   }
 }
