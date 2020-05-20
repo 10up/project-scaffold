@@ -1,6 +1,6 @@
 {
   "name": "@10up/create-10up",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CLI Command for scaffolding 10up projects",
   "main": "index.js",
   "scripts": {
