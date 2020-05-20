@@ -12,6 +12,8 @@ If you have an update for the theme or plugin that is generated, please submit t
 
 [View the plugin repository](https://github.com/10up/plugin-scaffold)
 
+[View the component repository](https://github.com/10up/component-scaffold)
+
 ## Set Up from Github
 
 1.  Clone the [repository](https://github.com/10up/project-scaffold) locally
